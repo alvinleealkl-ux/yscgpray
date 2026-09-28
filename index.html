@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>YSCG Prayer Wall</title>
+<meta name="description" content="A quiet place for YSCG to carry each other's burdens in prayer.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F6F1E8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161B" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235F7A61'/%3E%3Cpath d='M32 12v40M20 26h24' stroke='%23FFF6E3' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+/* =====================================================================
+   SETUP: paste your two Supabase values here (see SETUP-GUIDE).
+   Leave both empty to try the app in Preview mode (nothing is saved).
+   ===================================================================== */
+window.YSCG_CONFIG = {
+  SUPABASE_URL: "",   // e.g. "https://abcdefghijk.supabase.co"
+  SUPABASE_KEY: ""    // the "anon public" / "publishable" key
+};
+</script>
+<style>
+:root{
+  --bg:#F6F1E8; --bg-glow:#FFF8EA; --surface:#FFFDF8; --surface-2:#F1EBDF;
+  --ink:#2F2A24; --ink-soft:#5E574C; --muted:#877E71; --line:#E5DCCC;
+  --sage:#5F7A61; --sage-deep:#4A624C; --sage-tint:#E6EDE3;
+  --gold:#B8873A; --gold-tint:#F6EAD2; --flame:#E0A34A;
+  --rose:#A4574B; --rose-tint:#F5E3DF;
+  --on-accent:#FFFDF8;
+  --shadow:0 1px 2px rgba(60,45,20,.05), 0 6px 24px rgba(60,45,20,.06);
+  --radius:18px;
+  --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:"Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14161B; --bg-glow:#232129; --surface:#1C1F26; --surface-2:#252932;
+    --ink:#EFE8DC; --ink-soft:#C9C0B2; --muted:#9A9285; --line:#2F333D;
+    --sage:#93AE94; --sage-deep:#A9C2AA; --sage-tint:#243027;
+    --gold:#D9AE5F; --gold-tint:#352C1D; --flame:#F0BE63;
+    --rose:#D9897C; --rose-tint:#3A2522;
+    --on-accent:#14161B;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14161B; --bg-glow:#232129; --surface:#1C1F26; --surface-2:#252932;
+  --ink:#EFE8DC; --ink-soft:#C9C0B2; --muted:#9A9285; --line:#2F333D;
+  --sage:#93AE94; --sage-deep:#A9C2AA; --sage-tint:#243027;
+  --gold:#D9AE5F; --gold-tint:#352C1D; --flame:#F0BE63;
+  --rose:#D9897C; --rose-tint:#3A2522;
+  --on-accent:#14161B;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; min-height:100vh; font-family:var(--sans); font-size:16px; line-height:1.55;
+  color:var(--ink); background:var(--bg);
+  background-image:radial-gradient(ellipse 90% 420px at 50% -60px, var(--bg-glow), transparent 70%);
+  background-attachment:fixed;
+}
+button,input,textarea{font:inherit;color:inherit}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px calc(96px + env(safe-area-inset-bottom))}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- header ---------- */
+.hero{position:relative;text-align:center;padding:40px 0 18px}
+.hero .rays{position:absolute;left:50%;top:0;width:260px;height:190px;transform:translateX(-50%);pointer-events:none;opacity:.9}
+.hero h1{position:relative;font-family:var(--serif);font-weight:600;font-size:2.35rem;line-height:1.1;margin:10px 0 4px;letter-spacing:.01em}
+.hero .sub{position:relative;color:var(--muted);font-size:.95rem;margin:0}
+.verse{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--ink-soft);margin:14px auto 0;max-width:30em}
+.verse cite{display:block;font-family:var(--sans);font-style:normal;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.divider{display:flex;align-items:center;gap:12px;color:var(--sage);margin:18px 0}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;padding-top:12px;font-size:.88rem;color:var(--muted)}
+.linkbtn{background:none;border:0;padding:6px 4px;color:var(--sage-deep);cursor:pointer;font-weight:600;border-radius:8px}
+.linkbtn:hover{text-decoration:underline}
+.linkbtn.danger{color:var(--rose)}
+
+/* ---------- cards & surfaces ---------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+label{display:block;font-weight:600;font-size:.92rem;margin:14px 0 6px}
+.hint{font-size:.84rem;color:var(--muted);margin:4px 0 0}
+input[type=text],input[type=password],textarea{
+  width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);
+  outline:none;transition:border-color .2s, box-shadow .2s
+}
+textarea{min-height:96px;resize:vertical}
+input:focus,textarea:focus{border-color:var(--sage);box-shadow:0 0 0 3px color-mix(in srgb, var(--sage) 22%, transparent)}
+.check{display:flex;gap:10px;align-items:center;font-weight:400;margin-top:14px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--sage)}
+.count{text-align:right;font-size:.75rem;color:var(--muted);margin-top:2px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;
+  padding:12px 20px;font-weight:700;cursor:pointer;transition:transform .15s, background .2s, opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn-primary{background:var(--sage);color:var(--on-accent)}
+.btn-primary:hover{background:var(--sage-deep)}
+.btn-gold{background:var(--gold);color:var(--on-accent)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-block{width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.row .btn{flex:1 1 auto}
+.error{color:var(--rose);font-size:.9rem;margin:10px 0 0;min-height:1.2em}
+
+/* ---------- summary + filters ---------- */
+.summary{text-align:center;color:var(--ink-soft);margin:4px 0 14px;font-size:.98rem}
+.summary strong{color:var(--gold)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin:0 -2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;
+  font-size:.88rem;font-weight:600;color:var(--ink-soft);cursor:pointer;display:flex;gap:6px;align-items:center}
+.chip .n{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--sage);border-color:var(--sage);color:var(--on-accent)}
+.chip[aria-pressed="true"] .n{color:var(--on-accent);opacity:.85}
+
+.list{display:grid;gap:12px;margin-top:6px}
+.card{text-align:left;width:100%;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px 18px;display:grid;grid-template-columns:34px 1fr;gap:12px;transition:transform .15s,border-color .2s}
+.card:hover{border-color:color-mix(in srgb, var(--sage) 45%, var(--line))}
+.card:active{transform:scale(.995)}
+.card h3{margin:0;font-family:var(--serif);font-size:1.3rem;font-weight:600;line-height:1.2;overflow-wrap:anywhere}
+.card .meta{font-size:.82rem;color:var(--muted);margin-top:3px}
+.card .snip{font-size:.92rem;color:var(--ink-soft);margin:8px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.badge{font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink-soft)}
+.badge.wait{background:var(--gold-tint);color:var(--gold)}
+.badge.prayed{background:var(--sage-tint);color:var(--sage-deep)}
+.badge.answered{background:var(--gold);color:var(--on-accent)}
+.badge.you{background:transparent;border:1px solid var(--line)}
+.candle{width:34px;height:40px}
+.empty{text-align:center;color:var(--muted);padding:40px 12px}
+.empty .verse{font-size:1.05rem}
+
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));z-index:5;
+  box-shadow:0 8px 24px rgba(60,45,20,.22);padding:14px 24px;white-space:nowrap}
+.fab:active{transform:translateX(-50%) scale(.98)}
+.preview-banner{background:var(--gold-tint);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.86rem;margin-top:14px}
+
+/* ---------- dialogs ---------- */
+dialog{border:0;padding:0;background:transparent;max-width:640px;width:calc(100% - 24px);max-height:calc(100% - 24px);color:var(--ink)}
+dialog::backdrop{background:rgba(20,18,14,.45);backdrop-filter:blur(3px)}
+.sheet{background:var(--surface);border-radius:22px;padding:22px 20px 20px;border:1px solid var(--line);box-shadow:var(--shadow);max-height:calc(100vh - 24px);overflow:auto}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sheet h2{font-family:var(--serif);font-weight:600;font-size:1.7rem;line-height:1.15;margin:0;overflow-wrap:anywhere}
+.x{background:var(--surface-2);border:0;border-radius:999px;width:36px;height:36px;flex:0 0 36px;cursor:pointer;font-size:1.2rem;line-height:1;color:var(--ink-soft)}
+.details{white-space:pre-wrap;overflow-wrap:anywhere;margin:14px 0 0;color:var(--ink-soft)}
+.praise{background:var(--gold-tint);border-radius:14px;padding:14px 16px;margin-top:16px}
+.praise strong{display:block;font-family:var(--serif);font-size:1.2rem;color:var(--gold)}
+.praise p{margin:4px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.status-line{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:.9rem;color:var(--ink-soft)}
+.notes h4{font-family:var(--serif);font-size:1.25rem;font-weight:600;margin:22px 0 8px}
+.note{border-left:3px solid var(--sage);background:var(--bg);border-radius:0 12px 12px 0;padding:10px 14px;margin-bottom:10px}
+.note p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.note .by{font-size:.8rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;gap:8px}
+.note.silent p{color:var(--muted);font-style:italic}
+.owner-tools{border-top:1px solid var(--line);margin-top:18px;padding-top:10px;display:flex;flex-wrap:wrap;gap:4px 14px}
+
+/* ---------- prayer mode ---------- */
+#prayMode{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;
+  background-image:radial-gradient(ellipse 70% 55% at 50% 20%, var(--bg-glow), transparent 75%)}
+#prayMode .inner{max-width:560px;margin:0 auto;padding:40px 20px calc(40px + env(safe-area-inset-bottom));text-align:center;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+.glow{width:120px;height:120px;margin:0 auto 18px;border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb, var(--flame) 55%, transparent) 0%, color-mix(in srgb, var(--flame) 12%, transparent) 55%, transparent 72%);
+  display:grid;place-items:center;animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.88);opacity:.75}50%{transform:scale(1.08);opacity:1}}
+@media (prefers-reduced-motion: reduce){.glow{animation:none}}
+.breath{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+#prayMode h2{font-family:var(--serif);font-weight:600;font-size:1.9rem;line-height:1.15;margin:0;overflow-wrap:anywhere}
+#prayMode .for{color:var(--muted);margin:6px 0 0}
+#prayMode .details{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-top:18px}
+#prayMode .notebox{text-align:left;margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- ============ SIGN-IN ============ -->
+<main id="gate" class="wrap">
+  <header class="hero">
+    <svg class="rays" viewBox="0 0 260 190" aria-hidden="true">
+      <defs>
+        <radialGradient id="g1" cx="50%" cy="38%" r="55%">
+          <stop offset="0" stop-color="var(--flame)" stop-opacity=".30"/>
+          <stop offset="1" stop-color="var(--flame)" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="gv" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--gold)" stop-opacity="0"/>
+          <stop offset=".35" stop-color="var(--gold)" stop-opacity=".8"/>
+          <stop offset="1" stop-color="var(--gold)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="gh" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--gold)" stop-opacity="0"/>
+          <stop offset=".5" stop-color="var(--gold)" stop-opacity=".8"/>
+          <stop offset="1" stop-color="var(--gold)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="130" cy="70" rx="130" ry="95" fill="url(#g1)"/>
+      <rect x="128.5" y="6" width="3" height="120" rx="1.5" fill="url(#gv)"/>
+      <rect x="84" y="46" width="92" height="3" rx="1.5" fill="url(#gh)"/>
+    </svg>
+    <div style="height:70px"></div>
+    <h1>YSCG Prayer Wall</h1>
+    <p class="sub">A quiet place to carry one another in prayer</p>
+    <blockquote class="verse">“Carry each other’s burdens, and in this way you will fulfill the law of Christ.”<cite>Galatians 6:2</cite></blockquote>
+  </header>
+
+  <form id="loginForm" class="panel" autocomplete="off">
+    <label for="loginName">Your name</label>
+    <input id="loginName" type="text" maxlength="40" placeholder="e.g. Alvin" required>
+    <label for="loginCode">YSCG passcode</label>
+    <input id="loginCode" type="password" placeholder="Ask your CG leader" required autocomplete="current-password">
+    <p class="error" id="loginError" role="alert"></p>
+    <button class="btn btn-primary btn-block" type="button" data-submit id="loginBtn">Enter</button>
+    <p class="hint" style="text-align:center;margin-top:12px">Everything shared here stays within YSCG. Please don’t pass the passcode on.</p>
+  </form>
+  <div id="previewNote" class="preview-banner hidden">
+    <strong>Preview mode.</strong> This copy isn’t connected to a database yet, so nothing is saved. Try passcode <b>demo</b> (member) or <b>leader</b> (leader tools).
+  </div>
+</main>
+
+<!-- ============ THE WALL ============ -->
+<main id="app" class="wrap hidden">
+  <div class="topbar">
+    <span id="hello"></span>
+    <span>
+      <span id="leaderTag" class="badge hidden" style="margin-right:6px">Leader</span>
+      <button class="linkbtn" id="changeNameBtn" type="button">Change name</button>
+      <button class="linkbtn" id="logoutBtn" type="button">Sign out</button>
+    </span>
+  </div>
+  <header class="hero" style="padding-top:18px">
+    <h1 style="font-size:2rem">YSCG Prayer Wall</h1>
+    <blockquote class="verse" id="dailyVerse"></blockquote>
+  </header>
+  <div id="previewBanner" class="preview-banner hidden"><strong>Preview mode</strong> — nothing is saved. Connect Supabase to go live.</div>
+
+  <div class="divider" aria-hidden="true">
+    <svg width="46" height="18" viewBox="0 0 46 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+      <path d="M3 9h40"/><path d="M12 9c2-4 6-5 9-4-2 3-5 4-9 4z" fill="currentColor" fill-opacity=".25"/>
+      <path d="M22 9c2 4 6 5 9 4-2-3-5-4-9-4z" fill="currentColor" fill-opacity=".25"/>
+      <path d="M31 9c2-4 6-5 9-4-2 3-5 4-9 4z" fill="currentColor" fill-opacity=".25"/>
+    </svg>
+  </div>
+
+  <p class="summary" id="summary" aria-live="polite"></p>
+  <nav class="chips" id="chips" aria-label="Filter prayer requests"></nav>
+  <section class="list" id="list" aria-live="polite"></section>
+
+  <button class="btn btn-primary fab" id="newBtn" type="button">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    Share a prayer request
+  </button>
+</main>
+
+<!-- ============ PRAYER MODE ============ -->
+<section id="prayMode" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+  <div class="inner">
+    <div id="pmStep1">
+      <div class="glow" aria-hidden="true"><svg width="30" height="44" viewBox="0 0 30 44"><path d="M15 2c5 8 10 13 10 21a10 10 0 0 1-20 0C5 15 10 10 15 2z" fill="var(--flame)"/><path d="M15 16c2.5 4 5 6.5 5 10a5 5 0 0 1-10 0c0-3.5 2.5-6 5-10z" fill="var(--bg-glow)" opacity=".85"/></svg></div>
+      <p class="breath">Be still · breathe · pray</p>
+      <h2 id="pmTitle"></h2>
+      <p class="for" id="pmFor"></p>
+      <div class="details" id="pmDetails"></div>
+      <blockquote class="verse" id="pmVerse"></blockquote>
+      <div class="row">
+        <button class="btn btn-ghost" id="pmCancel" type="button">Not now</button>
+        <button class="btn btn-gold" id="pmAmen" type="button">Amen — I’ve prayed</button>
+      </div>
+    </div>
+    <form id="pmStep2" class="hidden">
+      <h2>Leave a word for them</h2>
+      <p class="for">A short encouragement, a verse, or the prayer you prayed. Optional.</p>
+      <div class="notebox">
+        <label for="pmNote" class="sr">Your note</label>
+        <textarea id="pmNote" maxlength="300" placeholder="e.g. Praying God gives you peace and clarity this week. You’re not alone."></textarea>
+        <div class="count" id="pmCount">0 / 300</div>
+        <label class="check"><input type="checkbox" id="pmAnon"> Don’t show my name</label>
+      </div>
+      <p class="error" id="pmError" role="alert"></p>
+      <div class="row">
+        <button class="btn btn-ghost" id="pmSkip" type="button">Just record that I prayed</button>
+        <button class="btn btn-primary" id="pmSend" type="button" data-submit>Send note</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ============ DIALOGS ============ -->
+<dialog id="detailDlg" aria-labelledby="dTitle"><div class="sheet" id="detailBody"></div></dialog>
+
+<dialog id="newDlg" aria-labelledby="newTitle">
+  <form class="sheet" id="newForm">
+    <div class="sheet-head"><h2 id="newTitle">Share a prayer request</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <label for="nTitle">What would you like prayer for?</label>
+    <input id="nTitle" type="text" maxlength="80" required placeholder="e.g. Peace for my exams next week">
+    <div class="count" id="nTitleCount">0 / 80</div>
+    <label for="nDetails">More details <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+    <textarea id="nDetails" maxlength="1000" placeholder="Share as much or as little as you like."></textarea>
+    <div class="count" id="nDetailsCount">0 / 1000</div>
+    <label class="check"><input type="checkbox" id="nAnon"> Post anonymously</label>
+    <p class="hint" id="nPostingAs"></p>
+    <p class="hint">Only share what the people involved would be comfortable with the CG knowing. If you need help urgently or are going through something heavy, please message your CG leader directly too — this wall isn’t checked around the clock.</p>
+    <p class="error" id="nError" role="alert"></p>
+    <div class="row">
+      <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+      <button class="btn btn-primary" type="button" data-submit id="nSubmit">Post request</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="answerDlg" aria-labelledby="aTitle">
+  <form class="sheet" id="answerForm">
+    <div class="sheet-head"><h2 id="aTitle">Praise God!</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <p class="hint">Share how God answered, so the CG can give thanks with you. Optional.</p>
+    <label for="aPraise" class="sr">Praise report</label>
+    <textarea id="aPraise" maxlength="500" placeholder="e.g. The results came back clear. Thank you all for praying!"></textarea>
+    <p class="error" id="aError" role="alert"></p>
+    <div class="row">
+      <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+      <button class="btn btn-gold" type="button" data-submit>Mark as answered</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="confirmDlg" aria-labelledby="cTitle">
+  <div class="sheet">
+    <h2 id="cTitle" style="font-size:1.4rem">Are you sure?</h2>
+    <p class="hint" id="cMsg" style="font-size:.95rem"></p>
+    <div class="row">
+      <button class="btn btn-ghost" type="button" id="cNo">Cancel</button>
+      <button class="btn btn-primary" type="button" id="cYes" style="background:var(--rose)">Yes, remove</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="nameDlg" aria-labelledby="nmTitle">
+  <form class="sheet" id="nameForm">
+    <div class="sheet-head"><h2 id="nmTitle">Your name</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <label for="nmInput" class="sr">Name</label>
+    <input id="nmInput" type="text" maxlength="40" required>
+    <div class="row"><button class="btn btn-primary" type="button" data-submit>Save</button></div>
+  </form>
+</dialog>
+
+<script>
+(() => {
+"use strict";
+
+/* ---------------- small helpers ---------------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const store = {
+  get(k, d = null){ try { const v = localStorage.getItem("yscg." + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v){ try { localStorage.setItem("yscg." + k, JSON.stringify(v)); } catch {} },
+  del(k){ try { localStorage.removeItem("yscg." + k); } catch {} }
+};
+// Forms are handled here instead of by the browser, so the page also works inside
+// previews/sandboxes that block normal form submission.
+function onSubmit(form, handler){
+  const run = () => {
+    if (form.checkValidity && !form.checkValidity()) {
+      const err = form.querySelector(".error"); if (err) err.textContent = "Please fill in the required fields.";
+      form.reportValidity(); return;
+    }
+    handler();
+  };
+  form.addEventListener("submit", e => { e.preventDefault(); run(); });
+  form.querySelectorAll("[data-submit]").forEach(b => b.addEventListener("click", run));
+  form.addEventListener("keydown", e => {
+    if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "checkbox") { e.preventDefault(); run(); }
+  });
+}
+function askConfirm(msg){
+  return new Promise(resolve => {
+    const d = $("#confirmDlg"); $("#cMsg").textContent = msg;
+    const done = v => { d.close(); $("#cYes").onclick = $("#cNo").onclick = d.oncancel = null; resolve(v); };
+    $("#cYes").onclick = () => done(true); $("#cNo").onclick = () => done(false); d.oncancel = () => done(false);
+    d.showModal();
+  });
+}
+function randomToken(){
+  const a = new Uint8Array(24); crypto.getRandomValues(a);
+  return Array.from(a, b => b.toString(16).padStart(2, "0")).join("");
+}
+function ago(iso){
+  if (!iso) return "";
+  const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+  if (s < 60) return "just now";
+  const m = s / 60; if (m < 60) return Math.floor(m) + (Math.floor(m) === 1 ? " min ago" : " mins ago");
+  const h = m / 60; if (h < 24) return Math.floor(h) + (Math.floor(h) === 1 ? " hour ago" : " hours ago");
+  const d = h / 24; if (d < 2) return "yesterday";
+  if (d < 14) return Math.floor(d) + " days ago";
+  return new Date(iso).toLocaleDateString(undefined, { day:"numeric", month:"short" });
+}
+const plural = (n, one, many) => n === 1 ? one : many;
+
+const VERSES = [
+  ["Carry each other’s burdens, and in this way you will fulfill the law of Christ.", "Galatians 6:2"],
+  ["Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.", "Philippians 4:6"],
+  ["Cast all your anxiety on him because he cares for you.", "1 Peter 5:7"],
+  ["For where two or three gather in my name, there am I with them.", "Matthew 18:20"],
+  ["The prayer of a righteous person is powerful and effective.", "James 5:16"],
+  ["Therefore encourage one another and build each other up.", "1 Thessalonians 5:11"],
+  ["The Lord is close to the brokenhearted.", "Psalm 34:18"],
+  ["Be still, and know that I am God.", "Psalm 46:10"],
+  ["Come to me, all you who are weary and burdened, and I will give you rest.", "Matthew 11:28"]
+];
+const verseHTML = ([t, r]) => `“${esc(t)}”<cite>${esc(r)}</cite>`;
+
+const candleSVG = lit => lit
+  ? `<svg class="candle" viewBox="0 0 34 40" aria-hidden="true"><circle cx="17" cy="10" r="9" fill="var(--flame)" opacity=".18"/><path d="M17 3c2.6 4 4.6 6.4 4.6 9.3a4.6 4.6 0 0 1-9.2 0C12.4 9.4 14.4 7 17 3z" fill="var(--flame)"/><rect x="11" y="18" width="12" height="19" rx="2.5" fill="var(--gold-tint)" stroke="var(--gold)" stroke-width="1.3"/></svg>`
+  : `<svg class="candle" viewBox="0 0 34 40" aria-hidden="true"><path d="M17 12v5" stroke="var(--muted)" stroke-width="1.4" stroke-linecap="round"/><rect x="11" y="18" width="12" height="19" rx="2.5" fill="none" stroke="var(--muted)" stroke-width="1.3" stroke-dasharray="3 2.5"/></svg>`;
+
+/* ---------------- API: Supabase (live) or in-memory (preview) ---------------- */
+const CFG = window.YSCG_CONFIG || {};
+CFG.SUPABASE_URL = String(CFG.SUPABASE_URL || "").trim(); CFG.SUPABASE_KEY = String(CFG.SUPABASE_KEY || "").trim();
+const LIVE = !!(CFG.SUPABASE_URL && CFG.SUPABASE_KEY);
+
+class ApiError extends Error { constructor(code, msg){ super(msg || code); this.code = code; } }
+
+async function liveCall(fn, args){
+  const headers = { "Content-Type": "application/json", "apikey": CFG.SUPABASE_KEY };
+  if (CFG.SUPABASE_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + CFG.SUPABASE_KEY; // older "anon" keys
+  let res;
+  try {
+    res = await fetch(CFG.SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/rpc/" + fn, { method:"POST", headers, body: JSON.stringify(args) });
+  } catch { throw new ApiError("network", "Couldn’t reach the prayer wall. Check your internet connection. (If this is a new setup, check SUPABASE_URL.)"); }
+  const text = await res.text();
+  let body = null; try { body = text ? JSON.parse(text) : null; } catch {}
+  if (!res.ok){
+    const m = (body && (body.message || body.hint)) || text || "";
+    if (/wrong_passcode/.test(m)) throw new ApiError("wrong_passcode", "That passcode didn’t work.");
+    if (/not_allowed/.test(m)) throw new ApiError("not_allowed", "You can’t change this request.");
+    if (res.status === 401 || res.status === 403) throw new ApiError("setup", "Setup problem: the Supabase key isn’t accepted. Check SUPABASE_KEY (use the publishable / anon key).");
+    if (res.status === 404) throw new ApiError("setup", "Setup problem: the prayer-wall database wasn’t found. Check SUPABASE_URL, and that the setup SQL ran successfully.");
+    throw new ApiError("server", "Something went wrong (" + res.status + "). Please try again.");
+  }
+  return body;
+}
+
+// Preview-mode stand-in that behaves like the database functions
+const demo = (() => {
+  const now = Date.now(), H = 3600e3, D = 24 * H;
+  const hash = t => "h:" + t;
+  const rows = [
+    { id:"d1", created_at:new Date(now - 3*H).toISOString(), name:"Rachel", title:"Wisdom for a job decision", details:"I have two offers and need to reply by Friday. Praying for clarity and peace about which one God is leading me to.", owner_hash:"x", answered_at:null, praise:null, archived:null, prayers:[] },
+    { id:"d2", created_at:new Date(now - 26*H).toISOString(), name:null, title:"My grandmother’s recovery", details:"She had a fall and is in hospital. Please pray for healing and for my family as we take turns caring for her.", owner_hash:"x", answered_at:null, praise:null, archived:null,
+      prayers:[{ id:"p1", name:"Joel", note:"Praying for strength for your whole family, and for the doctors caring for her.", created_at:new Date(now - 20*H).toISOString() }] },
+    { id:"d3", created_at:new Date(now - 4*D).toISOString(), name:"Daniel", title:"Courage to share my faith at work", details:"", owner_hash:"x", answered_at:null, praise:null, archived:null,
+      prayers:[{ id:"p2", name:null, note:null, created_at:new Date(now - 3*D).toISOString() }, { id:"p3", name:"Mei", note:"“For God has not given us a spirit of fear…” Jiayou!", created_at:new Date(now - 2*D).toISOString() }] },
+    { id:"d4", created_at:new Date(now - 9*D).toISOString(), name:"Sarah", title:"Visa interview", details:"", owner_hash:"x", answered_at:new Date(now - 1*D).toISOString(), praise:"Approved! Thank you everyone for praying with me.", archived:null,
+      prayers:[{ id:"p4", name:"Alvin", note:"Praying for favour and a calm heart.", created_at:new Date(now - 8*D).toISOString() }] },
+    { id:"d5", created_at:new Date(now - 40*D).toISOString(), name:"Ben", title:"Final-year project", details:"", owner_hash:"x", answered_at:null, praise:null, archived:null, prayers:[] }
+  ];
+  let seq = 10;
+  const role = c => c === "leader" ? "leader" : c === "demo" ? "member" : null;
+  const need = c => { const r = role(c); if (!r) throw new ApiError("wrong_passcode", "That passcode didn’t work. In preview, use demo or leader."); return r; };
+  const find = id => rows.find(r => r.id === id);
+  const fns = {
+    yscg_login: a => need(a.p_code),
+    yscg_list: a => { need(a.p_code); return rows.slice().sort((x, y) => y.created_at.localeCompare(x.created_at)).map(r => ({
+      id:r.id, created_at:r.created_at, name:r.name, title:r.title, details:r.details || null, answered_at:r.answered_at, praise:r.praise,
+      is_archived: r.archived ?? (Date.now() - new Date(r.created_at) > 28*D),
+      is_mine: !!a.p_owner_token && r.owner_hash === hash(a.p_owner_token),
+      prayer_count:r.prayers.length, last_prayed_at:r.prayers.length ? r.prayers[r.prayers.length - 1].created_at : null,
+      prayers: r.prayers.map(p => ({ ...p }))
+    })); },
+    yscg_add_request: a => { need(a.p_code); const id = "d" + (++seq); rows.push({ id, created_at:new Date().toISOString(), name:(a.p_name||"").trim()||null, title:a.p_title.trim(), details:(a.p_details||"").trim()||null, owner_hash:hash(a.p_owner_token), answered_at:null, praise:null, archived:null, prayers:[] }); return id; },
+    yscg_add_prayer: a => { need(a.p_code); const r = find(a.p_request_id); r.prayers.push({ id:"p" + (++seq), name:(a.p_name||"").trim()||null, note:(a.p_note||"").trim()||null, created_at:new Date().toISOString() }); return "ok"; },
+    yscg_set_answered: a => { const ro = need(a.p_code), r = find(a.p_request_id); if (!r || (ro !== "leader" && r.owner_hash !== hash(a.p_owner_token))) throw new ApiError("not_allowed", "You can’t change this request."); r.answered_at = a.p_answered ? (r.answered_at || new Date().toISOString()) : null; r.praise = a.p_answered ? ((a.p_praise||"").trim() || null) : null; },
+    yscg_delete_request: a => { const ro = need(a.p_code), i = rows.findIndex(r => r.id === a.p_request_id); if (i < 0 || (ro !== "leader" && rows[i].owner_hash !== hash(a.p_owner_token))) throw new ApiError("not_allowed", "You can’t change this request."); rows.splice(i, 1); },
+    yscg_set_archived: a => { if (need(a.p_code) !== "leader") throw new ApiError("not_allowed"); find(a.p_request_id).archived = a.p_archived; },
+    yscg_delete_prayer: a => { if (need(a.p_code) !== "leader") throw new ApiError("not_allowed"); rows.forEach(r => r.prayers = r.prayers.filter(p => p.id !== a.p_prayer_id)); }
+  };
+  return async (fn, args) => { await new Promise(r => setTimeout(r, 150)); return structuredClone(fns[fn](args)); };
+})();
+
+const call = (fn, args) => LIVE ? liveCall(fn, args) : demo(fn, args);
+
+/* ---------------- state ---------------- */
+const S = {
+  code: store.get("code"), role: store.get("role"), name: store.get("name", ""),
+  owner: store.get("owner") || (() => { const t = randomToken(); store.set("owner", t); return t; })(),
+  prayed: new Set(store.get("prayed", [])),
+  filter: null, items: [], openId: null, praying: null
+};
+const withCode = extra => ({ p_code: S.code, ...extra });
+
+/* ---------------- sign in / out ---------------- */
+if (!LIVE) { $("#previewNote").classList.remove("hidden"); $("#previewBanner").classList.remove("hidden"); }
+$("#loginName").value = S.name || "";
+
+onSubmit($("#loginForm"), async () => {
+  const name = $("#loginName").value.trim(), code = $("#loginCode").value.trim();
+  if (!name || !code) { $("#loginError").textContent = "Please enter your name and the YSCG passcode."; return; }
+  const btn = $("#loginBtn"); btn.disabled = true; btn.textContent = "Signing in…"; $("#loginError").textContent = "";
+  try {
+    const role = await call("yscg_login", { p_code: code });
+    Object.assign(S, { code, role, name });
+    store.set("code", code); store.set("role", role); store.set("name", name);
+    $("#loginCode").value = "";
+    await enterApp();
+  } catch (err) {
+    $("#loginError").textContent = err.message || "Something went wrong. Please try again.";
+  } finally { btn.disabled = false; btn.textContent = "Enter"; }
+});
+
+function signOut(){
+  store.del("code"); store.del("role"); S.code = S.role = null;
+  $("#app").classList.add("hidden"); $("#gate").classList.remove("hidden");
+}
+$("#logoutBtn").addEventListener("click", signOut);
+
+$("#changeNameBtn").addEventListener("click", () => { $("#nmInput").value = S.name; $("#nameDlg").showModal(); });
+onSubmit($("#nameForm"), () => {
+  const v = $("#nmInput").value.trim(); if (!v) return;
+  S.name = v; store.set("name", v); renderHeader(); $("#nameDlg").close();
+});
+
+async function enterApp(){
+  $("#gate").classList.add("hidden"); $("#app").classList.remove("hidden");
+  const day = Math.floor(Date.now() / 864e5);
+  $("#dailyVerse").innerHTML = verseHTML(VERSES[day % VERSES.length]);
+  renderHeader();
+  await refresh(true);
+}
+function renderHeader(){
+  $("#hello").textContent = "Hi " + S.name;
+  $("#leaderTag").classList.toggle("hidden", S.role !== "leader");
+}
+
+/* ---------------- data ---------------- */
+let refreshing = false;
+async function refresh(first){
+  if (!S.code || refreshing) return;
+  refreshing = true;
+  try {
+    S.items = await call("yscg_list", withCode({ p_owner_token: S.owner })) || [];
+    if (first && !S.filter) S.filter = groups().waiting.length ? "waiting" : "prayed";
+    render();
+    if (S.openId && $("#detailDlg").open) renderDetail();
+  } catch (err) {
+    if (err.code === "wrong_passcode") { signOut(); $("#loginError").textContent = "The passcode has changed. Please enter the new one."; }
+    else if (first) $("#list").innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+  } finally { refreshing = false; }
+}
+// Quiet live updates: check every 15 seconds while the page is open, and when you come back to it
+setInterval(() => { if (document.visibilityState === "visible" && S.praying === null) refresh(); }, 15000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") refresh(); });
+
+function groups(){
+  const active = S.items.filter(r => !r.is_archived);
+  const leastRecent = (a, b) => (a.last_prayed_at || "").localeCompare(b.last_prayed_at || "");
+  return {
+    waiting: active.filter(r => !r.answered_at && r.prayer_count === 0).sort((a, b) => a.created_at.localeCompare(b.created_at)),
+    prayed:  active.filter(r => !r.answered_at && r.prayer_count > 0).sort(leastRecent),
+    answered: active.filter(r => r.answered_at).sort((a, b) => b.answered_at.localeCompare(a.answered_at)),
+    mine: S.items.filter(r => r.is_mine),
+    archive: S.items.filter(r => r.is_archived)
+  };
+}
+const FILTERS = [
+  ["waiting", "Waiting for prayer"], ["prayed", "Prayed for"], ["answered", "Answered"], ["mine", "My requests"], ["archive", "Archive"]
+];
+const EMPTY = {
+  waiting: ["Every request has been prayed for.", ["Therefore encourage one another and build each other up.", "1 Thessalonians 5:11"]],
+  prayed: ["Nothing here yet.", null],
+  answered: ["No answered prayers yet — keep praying.", ["Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.", "Philippians 4:6"]],
+  mine: ["You haven’t shared a request from this phone yet.", null],
+  archive: ["Nothing archived.", null]
+};
+
+/* ---------------- render the wall ---------------- */
+function render(){
+  const g = groups();
+  const w = g.waiting.length;
+  $("#summary").innerHTML = w
+    ? `<strong>${w}</strong> ${plural(w, "request is", "requests are")} waiting for someone to pray.`
+    : `Every request has been prayed for. Thank you, YSCG.`;
+
+  $("#chips").innerHTML = FILTERS.map(([k, label]) =>
+    `<button class="chip" type="button" data-f="${k}" aria-pressed="${S.filter === k}">${label} <span class="n">${g[k].length}</span></button>`).join("");
+
+  const items = g[S.filter] || [];
+  if (!items.length){
+    const [msg, v] = EMPTY[S.filter];
+    $("#list").innerHTML = `<div class="empty"><p>${esc(msg)}</p>${v ? `<blockquote class="verse">${verseHTML(v)}</blockquote>` : ""}</div>`;
+    return;
+  }
+  $("#list").innerHTML = items.map(cardHTML).join("");
+}
+function statusBadges(r){
+  const b = [];
+  if (r.answered_at) b.push(`<span class="badge answered">Answered</span>`);
+  if (r.prayer_count === 0) b.push(`<span class="badge wait">Not yet prayed for</span>`);
+  else b.push(`<span class="badge prayed">Prayed for ${r.prayer_count}× · last ${esc(ago(r.last_prayed_at))}</span>`);
+  if (S.prayed.has(r.id)) b.push(`<span class="badge you">You prayed</span>`);
+  if (r.is_mine) b.push(`<span class="badge you">Your request</span>`);
+  return b.join("");
+}
+function cardHTML(r){
+  return `<button class="card" type="button" data-open="${esc(r.id)}">
+    ${candleSVG(r.prayer_count > 0 || !!r.answered_at)}
+    <div>
+      <h3>${esc(r.title)}</h3>
+      <div class="meta">${esc(r.name || "Anonymous")} · ${esc(ago(r.created_at))}</div>
+      ${r.details ? `<p class="snip">${esc(r.details)}</p>` : ""}
+      <div class="badges">${statusBadges(r)}</div>
+    </div>
+  </button>`;
+}
+
+$("#chips").addEventListener("click", e => {
+  const c = e.target.closest("[data-f]"); if (!c) return;
+  S.filter = c.dataset.f; render();
+});
+$("#list").addEventListener("click", e => {
+  const c = e.target.closest("[data-open]"); if (!c) return;
+  S.openId = c.dataset.open; renderDetail(); $("#detailDlg").showModal();
+});
+
+/* ---------------- request detail ---------------- */
+const current = () => S.items.find(r => r.id === S.openId);
+function renderDetail(){
+  const r = current();
+  if (!r) { if ($("#detailDlg").open) $("#detailDlg").close(); return; }
+  const canManage = r.is_mine || S.role === "leader";
+  const notes = r.prayers.slice().reverse();
+  $("#detailBody").innerHTML = `
+    <div class="sheet-head"><h2 id="dTitle">${esc(r.title)}</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <div class="meta" style="color:var(--muted);font-size:.88rem;margin-top:4px">${esc(r.name || "Anonymous")} · shared ${esc(ago(r.created_at))}</div>
+    ${r.details ? `<p class="details">${esc(r.details)}</p>` : ""}
+    ${r.answered_at ? `<div class="praise"><strong>Answered — praise God!</strong>${r.praise ? `<p>${esc(r.praise)}</p>` : ""}</div>` : ""}
+    <div class="status-line">${candleSVG(r.prayer_count > 0)}<span>${r.prayer_count === 0 ? "No one has prayed for this yet. Would you be the first?" : `Prayed for ${r.prayer_count} ${plural(r.prayer_count, "time", "times")} · last ${esc(ago(r.last_prayed_at))}`}</span></div>
+    <div class="row"><button class="btn ${r.answered_at ? "btn-ghost" : "btn-gold"} btn-block" type="button" data-act="pray">${r.answered_at ? "Give thanks in prayer" : (S.prayed.has(r.id) ? "Pray again" : "Pray for this")}</button></div>
+    <div class="notes">
+      <h4>Encouragement &amp; prayers</h4>
+      ${notes.length ? notes.map(p => `
+        <div class="note ${p.note ? "" : "silent"}">
+          <p>${p.note ? esc(p.note) : "Prayed quietly."}</p>
+          <div class="by"><span>${esc(p.name || "Someone")} · ${esc(ago(p.created_at))}</span>
+          ${S.role === "leader" ? `<button class="linkbtn danger" type="button" data-delnote="${esc(p.id)}">Remove</button>` : ""}</div>
+        </div>`).join("") : `<p class="hint">No notes yet.</p>`}
+    </div>
+    ${canManage ? `<div class="owner-tools">
+      ${r.answered_at ? `<button class="linkbtn" type="button" data-act="unanswer">Mark as not yet answered</button>` : `<button class="linkbtn" type="button" data-act="answer">Mark as answered</button>`}
+      ${S.role === "leader" ? `<button class="linkbtn" type="button" data-act="archive">${r.is_archived ? "Move back to wall" : "Archive"}</button>` : ""}
+      <button class="linkbtn danger" type="button" data-act="delete">Delete request</button>
+    </div>` : ""}
+    <p class="error" id="dError" role="alert"></p>`;
+}
+
+$("#detailDlg").addEventListener("click", async e => {
+  if (e.target === $("#detailDlg") || e.target.closest("[data-close]")) { $("#detailDlg").close(); return; }
+  const r = current(); if (!r) return;
+  const act = e.target.closest("[data-act]")?.dataset.act;
+  const delNote = e.target.closest("[data-delnote]")?.dataset.delnote;
+  try {
+    if (act === "pray") { $("#detailDlg").close(); startPraying(r); return; }
+    if (act === "answer") { $("#aPraise").value = ""; $("#aError").textContent = ""; $("#answerDlg").showModal(); return; }
+    if (act === "unanswer") await call("yscg_set_answered", withCode({ p_request_id: r.id, p_owner_token: S.owner, p_answered: false, p_praise: null }));
+    if (act === "archive") await call("yscg_set_archived", withCode({ p_request_id: r.id, p_archived: !r.is_archived }));
+    if (act === "delete") {
+      if (!(await askConfirm("This deletes the prayer request and all its notes. It can’t be undone."))) return;
+      await call("yscg_delete_request", withCode({ p_request_id: r.id, p_owner_token: S.owner }));
+      $("#detailDlg").close();
+    }
+    if (delNote) {
+      if (!(await askConfirm("Remove this note from the request?"))) return;
+      await call("yscg_delete_prayer", withCode({ p_prayer_id: delNote }));
+    }
+    if (act || delNote) await refresh();
+  } catch (err) { const el = $("#dError"); if (el) el.textContent = err.message; }
+});
+
+onSubmit($("#answerForm"), async () => {
+  try {
+    await call("yscg_set_answered", withCode({ p_request_id: S.openId, p_owner_token: S.owner, p_answered: true, p_praise: $("#aPraise").value }));
+    $("#answerDlg").close(); await refresh();
+  } catch (err) { $("#aError").textContent = err.message; }
+});
+
+/* ---------------- prayer mode ---------------- */
+function startPraying(r){
+  S.praying = r.id;
+  $("#pmTitle").textContent = r.title;
+  $("#pmFor").textContent = r.name ? `Bring ${r.name}’s request before God.` : "Bring this request before God.";
+  $("#pmDetails").textContent = r.details || "";
+  $("#pmDetails").classList.toggle("hidden", !r.details);
+  $("#pmVerse").innerHTML = verseHTML(VERSES[Math.floor(Math.random() * VERSES.length)]);
+  $("#pmNote").value = ""; $("#pmCount").textContent = "0 / 300"; $("#pmAnon").checked = false; $("#pmError").textContent = "";
+  $("#pmStep1").classList.remove("hidden"); $("#pmStep2").classList.add("hidden");
+  $("#prayMode").classList.remove("hidden"); document.body.style.overflow = "hidden";
+  $("#pmAmen").focus();
+}
+function stopPraying(){
+  S.praying = null; $("#prayMode").classList.add("hidden"); document.body.style.overflow = "";
+}
+$("#pmCancel").addEventListener("click", stopPraying);
+$("#pmAmen").addEventListener("click", () => { $("#pmStep1").classList.add("hidden"); $("#pmStep2").classList.remove("hidden"); $("#pmNote").focus(); });
+$("#pmNote").addEventListener("input", e => $("#pmCount").textContent = e.target.value.length + " / 300");
+async function recordPrayer(note){
+  const id = S.praying;
+  for (const b of [$("#pmSkip"), $("#pmSend")]) b.disabled = true;
+  try {
+    await call("yscg_add_prayer", withCode({ p_request_id: id, p_name: $("#pmAnon").checked ? null : S.name, p_note: note }));
+    S.prayed.add(id); store.set("prayed", [...S.prayed]);
+    stopPraying(); await refresh();
+    S.openId = id; renderDetail(); $("#detailDlg").showModal();
+  } catch (err) { $("#pmError").textContent = err.message; }
+  finally { for (const b of [$("#pmSkip"), $("#pmSend")]) b.disabled = false; }
+}
+onSubmit($("#pmStep2"), () => recordPrayer($("#pmNote").value));
+$("#pmSkip").addEventListener("click", () => recordPrayer(null));
+document.addEventListener("keydown", e => { if (e.key === "Escape" && S.praying !== null) stopPraying(); });
+
+/* ---------------- new request ---------------- */
+$("#newBtn").addEventListener("click", () => {
+  $("#newForm").reset(); $("#nError").textContent = "";
+  $("#nTitleCount").textContent = "0 / 80"; $("#nDetailsCount").textContent = "0 / 1000";
+  updatePostingAs(); $("#newDlg").showModal();
+});
+function updatePostingAs(){ $("#nPostingAs").textContent = $("#nAnon").checked ? "Your name won’t be shown." : `Posting as ${S.name}.`; }
+$("#nAnon").addEventListener("change", updatePostingAs);
+$("#nTitle").addEventListener("input", e => $("#nTitleCount").textContent = e.target.value.length + " / 80");
+$("#nDetails").addEventListener("input", e => $("#nDetailsCount").textContent = e.target.value.length + " / 1000");
+onSubmit($("#newForm"), async () => {
+  const title = $("#nTitle").value.trim(); if (!title) return;
+  const btn = $("#nSubmit"); btn.disabled = true;
+  try {
+    await call("yscg_add_request", withCode({ p_name: $("#nAnon").checked ? null : S.name, p_title: title, p_details: $("#nDetails").value, p_owner_token: S.owner }));
+    $("#newDlg").close(); S.filter = "mine"; await refresh();
+  } catch (err) { $("#nError").textContent = err.message; }
+  finally { btn.disabled = false; }
+});
+
+/* close buttons + tap-outside for simple dialogs */
+for (const id of ["newDlg", "answerDlg", "nameDlg"]) {
+  const d = document.getElementById(id);
+  d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-close]")) d.close(); });
+}
+
+/* ---------------- start ---------------- */
+if (S.code && S.role) enterApp();
+})();
+</script>
+</body>
+</html>
